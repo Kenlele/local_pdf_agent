@@ -1,0 +1,47 @@
+==================================================
+local_pdf_agent 專案進度與 Mac Mini 接續指南
+更新時間：2026-11-19
+==================================================
+
+【已完成項目】
+1. 專案內獨立安裝 Pi Agent（不安裝於全域）
+   - 套件：@mariozechner/pi-coding-agent (v0.73.1)
+   - 啟動腳本：./pi（會自動指定 PI_CODING_AGENT_DIR=./.pi/agent）
+
+2. PDF 解析工具與流程（專為財報、合約、長手冊＋地端小模型設計）
+   - scripts/pdf_helper.py：使用 pymupdf 解析目錄、關鍵字搜尋、分頁讀取與表格轉 Markdown
+   - .pi/extensions/pdf-tools.ts：註冊 4 個工具
+     * pdf_list（掃描 pdfs/ 資料夾）
+     * pdf_outline（讀取總頁數與書籤目錄）
+     * pdf_search（關鍵字定位頁碼）
+     * pdf_read_pages（每次讀 1~5 頁，保護小模型 Context）
+   - .pi/skills/pdf-analysis/SKILL.md：分析流程規範（要求查證並附頁碼）
+   - AGENTS.md：Pi 啟動時自動載入的專案工作守則
+   - pdfs/：專門放置待分析 PDF 的資料夾
+
+3. 地端模型設定（預設對接 LM Studio）
+   - .pi/agent/models.json：已設定 http://localhost:1234/v1，模型為 gemma-4-e4b-it（reasoning: true, vision: true, contextWindow: 32768）
+   - .pi/settings.json：預設使用 lmstudio / gemma-4-e4b-it
+
+--------------------------------------------------
+
+【在 Mac Mini 上接續使用步驟】
+1. 拉取專案（若已 clone 請執行 git pull）：
+   git clone https://github.com/Kenlele/local_pdf_agent.git
+   cd local_pdf_agent
+
+2. 安裝 Node 與 Python 相依套件：
+   npm install
+   uv venv .venv && uv pip install --python .venv/bin/python pymupdf
+
+3. 設定並啟動地端模型（LM Studio）：
+   - 在 LM Studio 下載：Gemma 4 E4B Instruct (MLX 4bit)
+   - 建議將 Context Length 設為 16384 或 32768
+   - 開啟 Local Server（預設 Port 1234）
+   - 若 LM Studio Developer 頁面顯示的 Model ID 與 "gemma-4-e4b-it" 不同，
+     請同步修改 .pi/agent/models.json 與 .pi/settings.json 裡的 ID
+
+4. 開始使用：
+   - 把要分析的 PDF 丟進 pdfs/ 資料夾
+   - 在專案目錄執行：./pi
+   - 直接下 Prompt 提問或要求根據 PDF 內容填寫／輸出檔案

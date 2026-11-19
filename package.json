@@ -1,0 +1,16 @@
+{
+  "name": "pdf_agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "PI_CODING_AGENT_DIR=./.pi/agent pi",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mariozechner/pi-coding-agent": "^0.73.1"
+  }
+}

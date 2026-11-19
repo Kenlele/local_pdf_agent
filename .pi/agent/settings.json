@@ -1,0 +1,5 @@
+{
+  "lastChangelogVersion": "0.73.1",
+  "defaultProvider": "lmstudio",
+  "defaultModel": "gemma-3-4b-it"
+}

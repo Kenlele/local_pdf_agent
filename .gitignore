@@ -1,0 +1,5 @@
+node_modules/
+.venv/
+.pi/agent/sessions/
+.pi/agent/auth.json
+.DS_Store
